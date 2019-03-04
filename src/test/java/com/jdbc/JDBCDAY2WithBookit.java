@@ -20,7 +20,15 @@ public class JDBCDAY2WithBookit {
 	
 	@Test
 	public void test1() {
+		//to get all rooms
 		String query = "SELECT * FROM room";
+		System.out.println(DBUtils.getQueryResultMap(query));
+	}
+	
+	@Test
+	public void test2() {
+		//to get all conferences that are booked
+		String query = "SELECT * FROM conference";
 		System.out.println(DBUtils.getQueryResultMap(query));
 	}
 }

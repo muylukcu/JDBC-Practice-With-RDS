@@ -152,5 +152,67 @@ public class DBUtils {
 		return rowList;
 	}
 	
+	 /* 
+	 * @param query
+	 * @return returns query result in a list of lists where outer list represents
+	 *         collection of rows and inner lists represent a single row
+	 */
+	public static List<List<Object>> getQueryResultList(String query) {
+		executeQuery(query);
+		List<List<Object>> rowList = new ArrayList<>();
+		ResultSetMetaData rsmd;
+
+		try {
+			rsmd = resultSet.getMetaData();
+			while (resultSet.next()) {
+				List<Object> row = new ArrayList<>();
+				for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+					row.add(resultSet.getObject(i));
+				}
+
+				rowList.add(row);
+
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return rowList;
+
+	}
+	
+	/**
+	 * 
+	 * @param query
+	 * @return returns a single cell value. If the results in multiple rows and/or
+	 *         columns of data, only first column of the first row will be returned.
+	 *         The rest of the data will be ignored
+	 */
+	public static Object getCellValue(String query) {
+		return getQueryResultList(query).get(0).get(0);
+	}
+
+	/**
+	 * 
+	 * @param query
+	 * @return returns a list of Strings which represent a row of data. If the query
+	 *         results in multiple rows and/or columns of data, only first row will
+	 *         be returned. The rest of the data will be ignored
+	 */
+	public static List<Object> getRowList(String query) {
+		return getQueryResultList(query).get(0);
+	}
+
+	/**
+	 * 
+	 * @param query
+	 * @return returns a map which represent a row of data where key is the column
+	 *         name. If the query results in multiple rows and/or columns of data,
+	 *         only first row will be returned. The rest of the data will be ignored
+	 */
+	public static Map<String, Object> getRowMap(String query) {
+		return getQueryResultMap(query).get(0);
+	}
 	
 }
